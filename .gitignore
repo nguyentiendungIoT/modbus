@@ -1,0 +1,106 @@
+# Build artifacts
+build/
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+*.su
+*.d
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# STM32CubeIDE
+.settings/
+Debug/
+Release/
+*.launch
+
+# Keil
+*.uvguix.*
+*.uvoptx
+*.bak
+*.ddk
+*.edk
+*.lst
+*.lnp
+*.mpf
+*.mpj
+*.omf
+*.plg
+*.tra
+*.htm
+*.dep
+*.crf
+*.d
+*.axf
+*.htm
+*.iex
+*.zip
+JLinkLog.txt
+*.ini
+
+# IAR
+settings/
+*.wsdt
+*.dep
+*.ewt
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Documentation
+docs/html/
+docs/latex/
