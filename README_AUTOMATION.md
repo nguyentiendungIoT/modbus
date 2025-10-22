@@ -1,3 +1,69 @@
+# STM32 Modbus Example Project
+
+## T?ng quan
+
+D? án này là ví d? hoàn ch?nh v? xây d?ng, n?p và debug firmware STM32 s? d?ng STM32CubeIDE, tích h?p th? vi?n Modbus RTU (MicroTBX-Modbus). Toàn b? quy trình build, flash, debug ??u t? ??ng hóa qua các script `.bat`.
+
+- **Firmware m?u**: Giao ti?p Modbus RTU trên UART2, t?c ??19200bps, parity EVEN, h? tr? callback ??c input register.
+- **Th? vi?n**: S? d?ng MicroTBX và MicroTBX-Modbus (server, client, RTU, callback, memory pool...)
+- **T? ??ng hóa**: build.bat, flash.bat, debug.bat giúp build, n?p, debug ch? v?i1 l?nh, không c?n c?u hình th? công.
+
+## C?u trúc th? m?c
+
+| Th? m?c/File | Mô t? |
+|--------------|-------|
+| `Core/Src/main.c` | Code chính, kh?i t?o Modbus, callback, vòng l?p x? lý |
+| `Library/microtbx-modbus/` | Th? vi?n Modbus RTU, server, client, transport, event... |
+| `Library/microtbx/` | Th? vi?n MicroTBX: memory, assert, crypto, port... |
+| `build.bat` | Script build firmware (t? ??ng clean, build, t?o .elf) |
+| `flash.bat` | Script n?p firmware qua ST-Link, t? ??ng tìm .elf |
+| `debug.bat` | Script debug v?i OpenOCD + GDB, t? ??ng tìm .elf |
+
+## H??ng d?n s? d?ng code Modbus
+
+1. **Kh?i t?o Modbus RTU và server:**
+ ```c
+ modbusTp = TbxMbRtuCreate(10, TBX_MB_UART_PORT1, TBX_MB_UART_19200BPS, TBX_MB_UART_1_STOPBITS, TBX_MB_EVEN_PARITY);
+ modbusServer = TbxMbServerCreate(modbusTp);
+ ```
+2. **??ng ký callback x? lý d? li?u:**
+ ```c
+ TbxMbServerSetCallbackReadInputReg(modbusServer, ModbusReadInputReg);
+ // Có th? ??ng ký thêm các callback khác: ??c/ghi coil, holding reg, custom function...
+ ```
+3. **Cài ??t callback ví d?:**
+ ```c
+ tTbxMbServerResult ModbusReadInputReg(tTbxMbServer channel, uint16_t addr, uint16_t *value) {
+ switch (addr) {
+ case30000U: *value =1234U; break;
+ case30001U: *value =5678U; break;
+ default: return TBX_MB_SERVER_ERR_ILLEGAL_DATA_ADDR;
+ }
+ return TBX_MB_SERVER_OK;
+ }
+ ```
+4. **Vòng l?p x? lý Modbus:**
+ ```c
+ while (1) {
+ TbxMbEventTask();
+ }
+ ```
+
+## Build, Flash, Debug
+
+- **Build:** Ch?y `build.bat` ?? biên d?ch, t?o file `Debug/*.elf`.
+- **Flash:** Ch?y `flash.bat` ?? n?p firmware vào board qua ST-Link.
+- **Debug:** Ch?y `debug.bat` ?? m? phiên debug v?i OpenOCD + GDB.
+
+> Các script t? ??ng nh?n di?n project, không c?n s?a tên file.
+
+## L?u ý
+- ??m b?o ?ã cài STM32CubeIDE1.16.1 và driver ST-Link.
+- Có th? m? r?ng thêm các callback cho Modbus server/client tùy nhu c?u.
+- Th? vi?n MicroTBX-Modbus h? tr? nhi?u ch? ??, có th? tham kh?o thêm trong source code.
+
+---
+
 # STM32 Build & Debug Automation Scripts
 
 ## ?? Files Overview
